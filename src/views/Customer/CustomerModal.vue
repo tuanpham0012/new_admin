@@ -4,7 +4,7 @@
     modal-size="modal-lg"
     @close="
       () => {
-        emits('close');
+        emits('close')
       }
     "
   >
@@ -13,82 +13,53 @@
         <div class="row">
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
-              <label for="name" class="form-label required">Họ tên</label>
+              <label for="email" class="form-label required">Họ tên</label>
             </div>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-fullname2" class="input-group-text"
-                ><i class="bx bx-user"></i
-              ></span>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                v-model="customer.name"
-              />
-            </div>
-            <Feedback :errors="errors?.Name" />
+            <InputGroup
+              v-model="customer.name"
+              placeholder="Nhập họ tên"
+              :errorMessage="errors?.Name"
+            >
+              <i class="fa-solid fa-user"></i>
+            </InputGroup>
           </div>
-
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
               <label for="email" class="form-label required">Email</label>
             </div>
-            <div class="input-group input-group-merge">
-              <span class="input-group-text"
-                ><i class="bx bx-envelope"></i
-              ></span>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                v-model="customer.email"
-              />
-            </div>
-            <Feedback :errors="errors?.Email" />
+            <InputGroup
+              v-model="customer.name"
+              placeholder="Nhập họ tên"
+              :errorMessage="errors?.Name"
+            >
+              <i class="fa-solid fa-user"></i>
+            </InputGroup>
           </div>
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
               <label for="phone" class="form-label">Điện thoại</label>
             </div>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-phone"></i
-              ></span>
-              <input
-                type="text"
-                class="form-control"
-                v-model="customer.phone"
-              />
-            </div>
-            <Feedback :errors="errors?.Phone" />
+            <InputGroup
+              v-model="customer.phone"
+              placeholder="Nhập điện thoại"
+              :errorMessage="errors?.Phone"
+            >
+              <i class="fa-solid fa-phone"></i>
+            </InputGroup>
           </div>
 
           <div class="col-sm-6 mb-3" v-if="!props.id">
             <div class="col-sm-12">
               <label for="password" class="form-label required">Password</label>
             </div>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-password" class="input-group-text"
-                ><i class="bx bx-lock"></i
-              ></span>
-              <input
-                :type="showPassword ? 'text' : 'password'"
-                class="form-control"
-                v-model="customer.password"
-              />
-            </div>
-            <div class="form-check mt-1">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="showPassword"
-                id="defaultCheck1"
-              />
-              <label class="form-check-label" for="defaultCheck1">
-                Hiện mật khẩu
-              </label>
-            </div>
-            <Feedback :errors="errors?.Password" />
+            <InputGroup
+              :type="showPassword ? 'text' : 'password'"
+              v-model="customer.password"
+              placeholder="Nhập mật khẩu"
+              :errorMessage="errors?.Password"
+            >
+              <i class="fa-solid fa-lock"></i>
+            </InputGroup>
           </div>
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
@@ -112,7 +83,7 @@
             </select>
             <Feedback :errors="errors?.Status" />
           </div>
-          
+
           <div class="col-sm-12 mb-3">
             <div class="col-sm-2">
               <label for="note" class="form-label">Địa chỉ</label>
@@ -134,55 +105,41 @@
         </div>
       </div>
     </template>
-    <template #footer>
-      <button class="btn btn-success" @click="save()">Lưu lại</button>
-      <button
-        class="btn btn-secondary"
-        @click="
-          () => {
-            emits('close');
-          }
-        "
-      >
-        Đóng
-      </button>
-    </template>
   </modal>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, computed, onBeforeMount } from "vue";
-import { useCustomerStore } from "@/stores/customer";
-import { successMessage } from "@/helpers/toast";
+import { ref, reactive, computed, onBeforeMount } from 'vue'
+import { useCustomerStore } from '@/stores/customer'
+import { errorMessage, successMessage } from '@/helpers/toast'
+import InputGroup from '@/components/input-form/InputGroup.vue'
 const props = defineProps({
   id: {
     type: [Number, String as () => string | null],
     required: false,
     default: null,
   },
-});
+})
 
-const emits = defineEmits(["close"]);
+const emits = defineEmits(['close'])
 
-const customerStore = useCustomerStore();
+const customerStore = useCustomerStore()
 
 const newCustomer = reactive({
   id: null,
-  name: "",
-  email: "",
-  phone: "",
-  address: "",
-  password: "",
+  name: '',
+  email: '',
+  phone: '',
+  address: '',
+  password: '',
   status: 0,
-  gender: 0
-});
+  gender: 0,
+})
 
 const customer = computed(() =>
-  props.id && customerStore.$state.customer
-    ? customerStore.$state.customer
-    : newCustomer
-);
+  props.id && customerStore.$state.customer ? customerStore.$state.customer : newCustomer,
+)
 
-const errors = ref<any>(null);
+const errors = ref<any>(null)
 
 const showPassword = ref<Boolean>(false)
 
@@ -191,31 +148,31 @@ const save = async () => {
     await customerStore
       .create(customer.value)
       .then((res) => {
-        console.log(res);
-        successMessage(res.data?.message ?? "Thêm mới thành công!");
-        emits("close", true);
+        console.log(res)
+        successMessage(res.data?.message ?? 'Thêm mới thành công!')
+        emits('close', true)
       })
       .catch((err) => {
-        console.log(err);
-        errors.value = err.response.data.errors;
-      });
+        console.log(err)
+        errors.value = err.response.data.errors
+      })
   } else {
     await customerStore
       .update(props.id, customer.value)
       .then((res) => {
-        successMessage(res.data?.message ?? "Cập nhật thành công!");
-        emits("close", true);
+        successMessage(res.data?.message ?? 'Cập nhật thành công!')
+        emits('close', true)
       })
       .catch((err) => {
-        console.log(err);
-        errors.value = err.response.data.errors;
-      });
+        console.log(err)
+        errors.value = err.response.data.errors
+      })
   }
-};
+}
 onBeforeMount(() => {
   if (props.id) {
-    customerStore.show(props.id);
+    customerStore.show(props.id)
   }
-});
+})
 </script>
 <style lang=""></style>

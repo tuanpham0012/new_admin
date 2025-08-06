@@ -12,6 +12,8 @@ import Feedback from "@/components/input-form/Feedback.vue";
 import AdminLayout from '@/components/layout/AdminLayout.vue';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue';
 import Button from '@/components/ui/Button.vue'
+import InputText from '@/components/input-form/InputText.vue';
+import InputGroup from '@/components/input-form/InputGroup.vue';
 
 /** end register component */
 
@@ -28,6 +30,8 @@ const globalComponent: Record<string, any> = {
     SelectSearchApi,
     AdminLayout,
     PageBreadcrumb,
-    Button
+    Button,
+    InputText,
+    InputGroup
 };
 export default globalComponent;

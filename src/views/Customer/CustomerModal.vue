@@ -65,11 +65,11 @@
             <div class="col-sm-12">
               <label for="gender" class="form-label">Giới tính</label>
             </div>
-            <select class="form-select" v-model="customer.gender" id="gender">
+            <select-base class="form-select" v-model="customer.gender" id="gender">
               <option selected :value="0">Khác</option>
               <option selected :value="1">Nam</option>
               <option selected :value="2">Nữ</option>
-            </select>
+            </select-base>
             <Feedback :errors="errors?.gender" />
           </div>
           <div class="col-sm-6 mb-3">

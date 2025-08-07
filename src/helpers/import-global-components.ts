@@ -14,6 +14,7 @@ import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue';
 import Button from '@/components/ui/Button.vue'
 import InputText from '@/components/input-form/InputText.vue';
 import InputGroup from '@/components/input-form/InputGroup.vue';
+import SelectBase from '@/components/input-form/SelectBase.vue';
 
 /** end register component */
 
@@ -32,6 +33,7 @@ const globalComponent: Record<string, any> = {
     PageBreadcrumb,
     Button,
     InputText,
-    InputGroup
+    InputGroup,
+    SelectBase
 };
 export default globalComponent;

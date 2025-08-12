@@ -2,11 +2,7 @@
   <modal
     :title="!id ? 'Thêm mới khách hàng' : 'Cập nhật khách hàng'"
     modal-size="modal-lg"
-    @close="
-      () => {
-        emits('close')
-      }
-    "
+    @close="emits('close')"
   >
     <template #body>
       <div class="col-sm-12">
@@ -15,103 +11,105 @@
             <div class="col-sm-12">
               <label for="email" class="form-label required">Họ tên</label>
             </div>
-            <InputGroup
+            <InputText
               v-model="customer.name"
               placeholder="Nhập họ tên"
               :errorMessage="errors?.Name"
             >
               <i class="fa-solid fa-user"></i>
-            </InputGroup>
+            </InputText>
           </div>
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
               <label for="email" class="form-label required">Email</label>
             </div>
-            <InputGroup
-              v-model="customer.name"
-              placeholder="Nhập họ tên"
-              :errorMessage="errors?.Name"
+            <InputText
+              type="email"
+              v-model="customer.email"
+              placeholder="Nhập email"
+              :errorMessage="errors?.Email"
             >
-              <i class="fa-solid fa-user"></i>
-            </InputGroup>
+              <i class="fa-solid fa-envelope"></i>
+            </InputText>
           </div>
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
               <label for="phone" class="form-label">Điện thoại</label>
             </div>
-            <InputGroup
+            <InputText
               v-model="customer.phone"
               placeholder="Nhập điện thoại"
               :errorMessage="errors?.Phone"
             >
               <i class="fa-solid fa-phone"></i>
-            </InputGroup>
+            </InputText>
           </div>
 
           <div class="col-sm-6 mb-3" v-if="!props.id">
             <div class="col-sm-12">
               <label for="password" class="form-label required">Password</label>
             </div>
-            <InputGroup
+            <InputText
               :type="showPassword ? 'text' : 'password'"
               v-model="customer.password"
               placeholder="Nhập mật khẩu"
               :errorMessage="errors?.Password"
             >
               <i class="fa-solid fa-lock"></i>
-            </InputGroup>
+            </InputText>
           </div>
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
               <label for="gender" class="form-label">Giới tính</label>
             </div>
-            <select-base class="form-select" v-model="customer.gender" id="gender">
-              <option selected :value="0">Khác</option>
-              <option selected :value="1">Nam</option>
-              <option selected :value="2">Nữ</option>
+            <select-base v-model="customer.gender" :errorMessage="errors?.gender">
+              <option :value="0">Khác</option>
+              <option :value="1">Nam</option>
+              <option :value="2">Nữ</option>
             </select-base>
-            <Feedback :errors="errors?.gender" />
           </div>
           <div class="col-sm-6 mb-3">
             <div class="col-sm-12">
               <label for="gender" class="form-label">Trạng thái</label>
             </div>
-            <select class="form-select" v-model="customer.status" id="gender">
-              <option selected :value="0">Chưa kích hoạt</option>
-              <option selected :value="1">Hoạt động</option>
-              <option selected :value="2">Đã khoá</option>
-            </select>
-            <Feedback :errors="errors?.Status" />
+            <select-base v-model="customer.status" :errorMessage="errors?.status">
+              <option :value="0">Chưa kích hoạt</option>
+              <option :value="1">Hoạt động</option>
+              <option :value="2">Đã khoá</option>
+            </select-base>
           </div>
 
           <div class="col-sm-12 mb-3">
             <div class="col-sm-2">
               <label for="note" class="form-label">Địa chỉ</label>
             </div>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-address" class="input-group-text"
-                ><i class="bx bxs-map"></i
-              ></span>
-              <input
-                type="text"
-                class="form-control"
-                id="address"
-                placeholder="Địa chỉ chi tiết"
-                v-model="customer.address"
-              />
-            </div>
-            <Feedback :errors="errors?.Address" />
+
+            <input-group
+              v-model="customer.address"
+              placeholder="Địa chỉ chi tiết"
+              :errorMessage="errors?.Address"
+            >
+              <i class="fa-solid fa-location-dot"></i>
+            </input-group>
           </div>
         </div>
       </div>
     </template>
+    <template #footer>
+      <div class="flex items-center justify-end w-full gap-3 mt-6">
+          <Button size="sm" variant="outline" @click="emits('close')"> Đóng </Button>
+          <Button size="sm" variant="primary" :onClick="save"> Lưu lại </Button>
+        </div>
+    </template>
   </modal>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, computed, onBeforeMount } from 'vue'
+import { ref, reactive, computed, onBeforeMount, watch } from 'vue'
 import { useCustomerStore } from '@/stores/customer'
 import { errorMessage, successMessage } from '@/helpers/toast'
-import InputGroup from '@/components/input-form/InputGroup.vue'
+import InputText from '@/components/input-form/InputText.vue'
+import Button from '@/components/ui/Button.vue'
+import { removeVietnameseTones} from '@/services/utils'
 const props = defineProps({
   id: {
     type: [Number, String as () => string | null],
@@ -144,6 +142,7 @@ const errors = ref<any>(null)
 const showPassword = ref<Boolean>(false)
 
 const save = async () => {
+  console.log('customer', customer.value)
   if (customer.value.id == null) {
     await customerStore
       .create(customer.value)
@@ -169,6 +168,13 @@ const save = async () => {
       })
   }
 }
+
+watch(
+  () => customer.value.password,
+  (newValue) => {
+    customer.value.password = removeVietnameseTones(newValue)
+  },
+)
 onBeforeMount(() => {
   if (props.id) {
     customerStore.show(props.id)

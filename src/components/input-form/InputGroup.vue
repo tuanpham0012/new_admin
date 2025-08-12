@@ -1,6 +1,6 @@
 <template lang="">
   <div class="relative">
-    <span
+    <span 
       class="absolute top-1/2 left-0 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400"
       ><slot></slot
     ></span>
@@ -12,10 +12,10 @@
       :placeholder="placeholder"
       :class="
         errorMessage.length > 0
-          ? 'border-error-300 focus:border-error-300 dark:border-error-700 dark:focus:border-error-800'
+          ? 'border-error-300 focus:border-error-300 focus:ring-error-500/10 dark:border-error-700 dark:focus:border-error-800'
           : 'border-gray-300 focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800'
       "
-      class="dark:bg-dark-900 shadow-theme-xs focus:ring-brand-300/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border bg-transparent px-4 py-2.5 pl-[62px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+      class="dark:bg-dark-900 shadow-theme-xs dark:focus:border-brand-800 h-11 w-full rounded-lg border bg-transparent px-4 py-2.5 pl-[62px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
     />
     <span class="absolute top-1/2 right-3.5 -translate-y-1/2" v-if="errorMessage.length > 0">
       <svg
@@ -53,6 +53,10 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Enter text',
+  },
+  type: {
+    type: String,
+    default: 'text',
   },
 })
 defineEmits(['update:modelValue'])

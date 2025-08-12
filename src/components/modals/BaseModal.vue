@@ -54,13 +54,13 @@ const closeModal = () => {
       <h4 class="mb-3 text-lg font-medium text-gray-800 dark:text-white/90 border-b pb-1 ">
           {{ props.title }}
         </h4>
-      <form class="px-3 py-2 lg:px-5">
+      <div class="px-3 py-2 lg:px-5">
         
 
         <slot name="body"></slot>
 
         <slot name="footer"></slot>
-      </form>
+      </div>
     </div>
   </div>
 </template>

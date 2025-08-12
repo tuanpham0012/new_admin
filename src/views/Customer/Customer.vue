@@ -13,7 +13,7 @@ const query = reactive({
   pageSize: 25,
   search: '',
   page: 1,
-  status: null,
+  status: -1,
 })
 const showModal = ref(false)
 const id = ref(null)
@@ -92,7 +92,13 @@ watch(
 )
 
 const getListData = async () => {
-  await customerStore.getList(query)
+
+  await customerStore.getList({
+    page: query.page,
+    pageSize: query.pageSize,
+    search: query.search,
+    status: query.status == -1 ? null : query.status,
+  })
 }
 
 const statusTag = (status: number) => {
@@ -116,7 +122,7 @@ onBeforeMount(async () => {
   <admin-layout>
     <PageBreadcrumb :pageTitle="currentPageTitle" />
     <div
-      class="flex flex-col h-[calc(100vh-164px)]  rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+      class="flex flex-col h-[calc(100vh-164px)] rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
     >
       <div
         class="flex flex-col justify-between gap-5 border-b border-gray-200 px-5 py-2 sm:flex-row sm:items-center dark:border-gray-800"
@@ -188,10 +194,8 @@ onBeforeMount(async () => {
             />
           </div>
           <div class="relative">
-            <select-base
-              v-model="query.status"
-            >
-              <option selected :value="null">Chọn trạng thái</option>
+            <select-base v-model="query.status">
+              <option selected :value="-1">Chọn trạng thái</option>
               <option selected :value="0">Chưa kích hoạt</option>
               <option selected :value="1">Hoạt động</option>
               <option selected :value="2">Đã khoá</option>
@@ -237,24 +241,24 @@ onBeforeMount(async () => {
       <ScrollTable class="mx-1 my-2" height="calc(100vh - 330px)">
         <thead class="table-light">
           <tr class="border-b border-gray-200 dark:border-gray-700">
-            <th class="px-5 py-2 text-left bg-gray-50 w-1/24 sm:px-6 dark:bg-gray-800">
-              <p class="text-theme-medium font-bold text-gray-800 dark:text-gray-400">STT</p>
+            <th class="px-5 py-2 text-left bg-gray-50 w-1/24 sm:px-6 dark:bg-gray-900">
+              <p class="text-theme-medium font-bold text-gray-800 dark:text-gray-200">STT</p>
             </th>
-            <th class="px-5 py-2 text-left bg-gray-50 w-7/24 sm:px-6 dark:bg-gray-800">
-              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-400">
+            <th class="px-5 py-2 text-left bg-gray-50 w-7/24 sm:px-6 dark:bg-gray-900">
+              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-200">
                 Khách hàng
               </p>
             </th>
-            <th class="px-5 py-2 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-800">
-              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-400">
+            <th class="px-5 py-2 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-900">
+              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-200">
                 Điện thoại
               </p>
             </th>
-            <th class="px-5 py-2 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-800">
-              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-400">Email</p>
+            <th class="px-5 py-2 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-900">
+              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-200">Email</p>
             </th>
-            <th class="px-5 py-2 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-800">
-              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-400">
+            <th class="px-5 py-2 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-900">
+              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-200">
                 Trạng thái
               </p>
             </th>
@@ -262,9 +266,9 @@ onBeforeMount(async () => {
             THAY ĐỔI 3: Thêm `sticky top-0` và `right-0` để cố định cột cuối cùng.
           -->
             <th
-              class="sticky top-0 right-0 z-10 px-5 py-3 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-800"
+              class="sticky top-0 right-0 z-10 px-5 py-3 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-900"
             >
-              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-400">Actions</p>
+              <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-200">Actions</p>
             </th>
           </tr>
         </thead>
@@ -272,41 +276,50 @@ onBeforeMount(async () => {
           <tr
             v-for="(item, index) in customers"
             :key="index"
-            class="border-t border-gray-200 dark:border-gray-800"
+            class="border-t border-gray-200 dark:border-gray-600"
           >
-            <!--
-            THAY ĐỔI 4: Cố định cột STT khi cuộn ngang.
-            Thêm `sticky left-0` và background để không bị trong suốt.
-          -->
-            <td class="sticky left-0 px-5 py-2 bg-white sm:px-6 dark:bg-white/[0.03]">
+            <td
+              class="sticky left-0 px-5 py-2 bg-white sm:px-6 dark:bg-white/[0.01] dark:text-gray-200"
+            >
               <strong>{{ index + 1 }}</strong>
             </td>
-            <td class="px-5 py-2 sm:px-6 max-w-[500px]">
+            <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200">
               <strong>{{ item.name }}</strong>
               <p class="m-0 text-break overflow-hidden truncate" :title="item.address">
                 <i class="bx bxs-map bx-xs"></i>{{ item.address }}
               </p>
             </td>
-            <td class="px-5 py-2 sm:px-6">{{ item.phone }}</td>
-            <td class="px-5 py-2 sm:px-6">{{ item.email }}</td>
-            <td v-html="statusTag(item.status)"></td>
+            <td class="px-5 py-2 sm:px-6 dark:bg-white/[0.01] dark:text-gray-200">
+              {{ item.phone }}
+            </td>
+            <td class="px-5 py-2 sm:px-6 dark:bg-white/[0.01] dark:text-gray-200">
+              {{ item.email }}
+            </td>
+            <td
+              class="px-5 py-2 sm:px-6 dark:bg-white/[0.01] dark:text-gray-200"
+              v-html="statusTag(item.status)"
+            ></td>
             <!--
             THAY ĐỔI 5: Cố định cột Actions khi cuộn ngang.
             Thêm `sticky right-0` và background.
           -->
-            <td class="flex gap-2 px-5 py-2 bg-white sm:px-6 dark:bg-white/[0.03]">
-              <button
-                type="button"
-                class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
-                @click="toggleEdit(item.id)"
-              >
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button
-                class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
-              >
-                <i class="fa-solid fa-trash"></i>
-              </button>
+            <td
+              class="px-5 py-2 bg-white sm:px-6 dark:bg-white/[0.01]"
+            >
+              <div class="flex gap-2">
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+                  @click="toggleEdit(item.id)"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button
+                  class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

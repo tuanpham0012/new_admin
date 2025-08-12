@@ -1,16 +1,22 @@
 <template lang="">
   <div class="relative">
+    <span
+      v-if="$slots.default"
+      class="absolute top-1/2 left-0 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400"
+      ><slot></slot
+    ></span>
     <input
-      :type="type"
+      :type="typeDefault"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       :placeholder="placeholder"
       :class="
-        errorMessage.length > 0
-          ? 'border-error-300 focus:border-error-300 dark:border-error-700 dark:focus:border-error-800'
-          : 'border-gray-300 focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800'
+        (errorMessage.length > 0
+          ? 'border-error-300 focus:border-error-300 focus:ring-error-500/10 dark:border-error-700 dark:focus:border-error-800'
+          : 'border-gray-300 focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800',
+        $slots.default ? 'pl-[62px] pr-5' : 'pl-2 pr-10')
       "
-      class="dark:bg-dark-900 shadow-theme-xs focus:ring-error-300/10 w-full rounded-lg border bg-transparent px-4 py-2.5 pr-10 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+      class="dark:bg-dark-900 shadow-theme-xs focus:ring-error-300/10 w-full rounded-lg border bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
     />
     <span class="absolute top-1/2 right-3.5 -translate-y-1/2" v-if="errorMessage.length > 0">
       <svg
@@ -28,17 +34,35 @@
         ></path>
       </svg>
     </span>
+    <span
+      class="absolute top-1/2 right-3.5 -translate-y-1/2"
+      v-if="type === 'password'"
+      @click="changeInputType"
+    >
+      <i v-if="typeDefault === 'password'" class="fa-solid fa-eye"></i><i v-else class="fa-solid fa-eye-slash"></i>
+    </span>
   </div>
-  <p class="text-theme-xs text-error-500 mt-1.5 ms-0.5">{{ errorMessage }}</p>
+  <p v-if="typeof errorMessage === 'string'" class="text-theme-xs text-error-500 mt-1.5 ms-0.5">
+    {{ errorMessage }}
+  </p>
+  <p
+    v-else
+    v-for="(error, index) in errorMessage"
+    :key="index"
+    class="text-theme-xs text-error-500 mt-1.5 ms-0.5"
+  >
+    {{ error }}
+  </p>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue'
 const props = defineProps({
   modelValue: {
     type: String,
     default: '',
   },
   errorMessage: {
-    type: String,
+    type: [String, Array],
     default: '',
   },
   type: {
@@ -50,6 +74,17 @@ const props = defineProps({
     default: 'Enter text',
   },
 })
+
+const typeDefault = ref(props.type)
+
+const changeInputType = () => {
+  if (typeDefault.value === 'password') {
+    typeDefault.value = 'text'
+  } else {
+    typeDefault.value = props.type
+  }
+}
+
 defineEmits(['update:modelValue'])
 </script>
 <style lang=""></style>

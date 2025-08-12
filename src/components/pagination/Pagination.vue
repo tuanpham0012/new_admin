@@ -21,7 +21,7 @@
       <div class="flex items-center justify-between gap-3">
         <button
           @click="changePage((currentPage -= 1))"
-          class="text-theme-sm shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 px-1 py-2 font-medium hover:bg-gray-50 hover:text-gray-800 sm:px-3.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+          class="text-theme-sm shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 px-1 py-2 font-medium hover:bg-gray-50 hover:text-gray-800 sm:px-3.5 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
           :class="props.currentPage <= 1 ? 'disabled bg-gray-300 text-gray-500' : 'bg-white text-gray-700'"
         >
           <svg
@@ -48,15 +48,15 @@
             v-for="(page, index) in pageView(props.totalPages)"
             :key="index"
             :class="{
-              'active bg-brand-500/[0.08] text-brand-500': page == props.currentPage,
+              'active bg-brand-500/[0.08] text-brand-500/[0.08] dark:bg-gray-100/[0.5] dark:border-brand-500/[0.5] dark:text-gray-200 dark:hover:text-brand-500': page == props.currentPage,
               'disabled': typeof page == 'string',
             }"
             @click.prevent="changePage(page)"
-            class="border-1 border-brand-500/[0.08]"
+            class="border-1 border-brand-500/[0.08] dark:border-gray-300"
           >
             <a
               href="#"
-              class="text-theme-sm hover:bg-brand-500/[0.08] hover:text-brand-500 dark:text-brand-500 dark:hover:text-brand-500 flex h-8 w-8 items-center justify-center rounded-lg font-medium"
+              class="text-theme-sm hover:bg-brand-500/[0.08] hover:text-brand-500 flex h-8 w-8 items-center justify-center rounded-lg font-medium"
             >
               {{ page }}
             </a>
@@ -65,7 +65,7 @@
 
         <button
           @click="changePage((currentPage += 1))"
-          class="text-theme-sm shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300  px-2 py-2 font-medium  hover:bg-gray-50 hover:text-gray-800 sm:px-3.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+          class="text-theme-sm shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300  px-2 py-2 font-medium  hover:bg-gray-50 hover:text-gray-800 sm:px-3.5 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
           :class="props.currentPage >= props.totalPages ? 'disabled bg-gray-300 text-gray-500': 'bg-white text-gray-700'"
         >
           <span class="hidden sm:inline"> Next </span>

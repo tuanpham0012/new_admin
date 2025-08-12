@@ -48,18 +48,16 @@
             v-for="(page, index) in pageView(props.totalPages)"
             :key="index"
             :class="{
-              'active bg-brand-500/[0.08] text-brand-500/[0.08] dark:bg-gray-100/[0.5] dark:border-brand-500/[0.5] dark:text-gray-200 dark:hover:text-brand-500': page == props.currentPage,
+              'active': page == props.currentPage,
               'disabled': typeof page == 'string',
             }"
             @click.prevent="changePage(page)"
-            class="border-1 border-brand-500/[0.08] dark:border-gray-300"
           >
-            <a
-              href="#"
-              class="text-theme-sm hover:bg-brand-500/[0.08] hover:text-brand-500 flex h-8 w-8 items-center justify-center rounded-lg font-medium"
-            >
-              {{ page }}
-            </a>
+            <a href="#" 
+            :class="page == props.currentPage ? 'bg-brand-500/[0.08] text-brand-500 dark:bg-gray-100/[0.5] dark:border-brand-500/[0.5] dark:text-gray-200 dark:hover:text-brand-500' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:text-gray-200 dark:hover:bg-white/[0.3] dark:hover:text-gray-200'"
+            class=" text-theme-sm hover:bg-brand-500/[0.08] hover:text-brand-500 dark:text-brand-500 dark:hover:text-brand-500 flex h-10 w-10 items-center justify-center rounded-lg font-medium">
+            {{ page}}
+          </a>
           </li>
         </ul>
 

@@ -266,7 +266,7 @@ onBeforeMount(async () => {
             THAY ĐỔI 3: Thêm `sticky top-0` và `right-0` để cố định cột cuối cùng.
           -->
             <th
-              class="sticky top-0 right-0 z-10 px-5 py-3 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-900"
+              class="px-5 py-3 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-900"
             >
               <p class="text-theme-medium font-medium text-gray-800 dark:text-gray-200">Actions</p>
             </th>

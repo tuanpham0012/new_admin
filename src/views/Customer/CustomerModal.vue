@@ -97,9 +97,9 @@
     </template>
     <template #footer>
       <div class="flex items-center justify-end w-full gap-3 mt-6">
-          <Button size="sm" variant="outline" @click="emits('close')"> Đóng </Button>
-          <Button size="sm" variant="primary" :onClick="save"> Lưu lại </Button>
-        </div>
+        <Button size="sm" variant="outline" @click="emits('close')"> Đóng </Button>
+        <Button size="sm" variant="primary" :onClick="save"> Lưu lại </Button>
+      </div>
     </template>
   </modal>
 </template>
@@ -109,7 +109,7 @@ import { useCustomerStore } from '@/stores/customer'
 import { errorMessage, successMessage } from '@/helpers/toast'
 import InputText from '@/components/input-form/InputText.vue'
 import Button from '@/components/ui/Button.vue'
-import { removeVietnameseTones} from '@/services/utils'
+import { removeVietnameseTones } from '@/services/utils'
 const props = defineProps({
   id: {
     type: [Number, String as () => string | null],

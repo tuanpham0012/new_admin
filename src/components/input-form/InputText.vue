@@ -10,13 +10,14 @@
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       :placeholder="placeholder"
+      :disabled="disabled"
       :class="
         (errorMessage.length > 0
           ? 'border-error-300 focus:border-error-300 focus:ring-error-500/10 dark:border-error-700 dark:focus:border-error-800'
           : 'border-gray-300 focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800',
         $slots.default ? 'pl-[62px] pr-5' : 'pl-2 pr-10')
       "
-      class="dark:bg-dark-900 shadow-theme-xs focus:ring-error-300/10 w-full rounded-lg border bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+      class="dark:bg-dark-900 shadow-theme-xs focus:ring-error-300/10 w-full rounded-lg border bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 disabled:bg-gray-200 dark:disabled:bg-gray-700"
     />
     <span class="absolute top-1/2 right-3.5 -translate-y-1/2" v-if="errorMessage.length > 0">
       <svg
@@ -72,6 +73,10 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Enter text',
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 })
 

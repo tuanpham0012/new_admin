@@ -131,9 +131,6 @@ onBeforeMount(async () => {
           <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
             Danh sách khách hàng
           </h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            Track your store's progress to boost your sales.
-          </p>
         </div>
         <div class="flex gap-3">
           <button
@@ -201,47 +198,12 @@ onBeforeMount(async () => {
               <option selected :value="2">Đã khoá</option>
             </select-base>
           </div>
-          <div class="relative" x-data="{ showFilter: false }">
-            <div
-              x-show="showFilter"
-              class="absolute right-0 z-10 mt-2 w-56 rounded-lg border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-700 dark:bg-gray-800"
-              style="display: none"
-            >
-              <div class="mb-5">
-                <label class="mb-2 block text-xs font-medium text-gray-700 dark:text-gray-300">
-                  Category
-                </label>
-                <input
-                  type="text"
-                  class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-10 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                  placeholder="Search category..."
-                  wfd-id="id2"
-                />
-              </div>
-              <div class="mb-5">
-                <label class="mb-2 block text-xs font-medium text-gray-700 dark:text-gray-300">
-                  Company
-                </label>
-                <input
-                  type="text"
-                  class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-10 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                  placeholder="Search company..."
-                  wfd-id="id3"
-                />
-              </div>
-              <button
-                class="bg-brand-500 hover:bg-brand-600 h-10 w-full rounded-lg px-3 py-2 text-sm font-medium text-white"
-              >
-                Apply
-              </button>
-            </div>
-          </div>
         </div>
       </div>
-      <ScrollTable class="mx-1 my-2" height="calc(100vh - 330px)">
+      <ScrollTable class="mx-1 my-2">
         <thead class="table-light">
           <tr class="border-b border-gray-200 dark:border-gray-700">
-            <th class="px-5 py-2 text-left bg-gray-50 w-1/24 sm:px-6 dark:bg-gray-900">
+            <th class="sticky left-0 px-5 py-2 text-left bg-gray-50 w-1/24 sm:px-6 dark:bg-gray-900">
               <p class="text-theme-medium font-bold text-gray-800 dark:text-gray-200">STT</p>
             </th>
             <th class="px-5 py-2 text-left bg-gray-50 w-7/24 sm:px-6 dark:bg-gray-900">
@@ -281,7 +243,7 @@ onBeforeMount(async () => {
             <td
               class="sticky left-0 px-5 py-2 bg-white sm:px-6 dark:bg-white/[0.01] dark:text-gray-200"
             >
-              <strong>{{ index + 1 }}</strong>
+              <strong class="text-align">{{ index + 1 }}</strong>
             </td>
             <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200">
               <strong>{{ item.name }}</strong>
@@ -337,7 +299,5 @@ onBeforeMount(async () => {
 </template>
 
 <style lang="scss" scoped>
-.table-scroll {
-  height: calc(100vh - 330px);
-}
+
 </style>

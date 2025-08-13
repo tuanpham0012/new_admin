@@ -33,7 +33,7 @@ const closeModal = () => {
       <!-- close btn -->
       <button
         @click="closeModal"
-        class="group absolute right-2 top-2 z-999 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-gray-500 transition-colors hover:bg-gray-300 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-700 sm:right-3 sm:top-3 sm:h-8 sm:w-8"
+        class="group absolute right-2 top-2 z-999 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-gray-500 transition-colors hover:bg-gray-300 hover:text-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 sm:right-3 sm:top-3 sm:h-8 sm:w-8"
       >
         <svg
           class="transition-colors fill-current group-hover:text-gray-600 dark:group-hover:text-gray-200"
@@ -51,7 +51,7 @@ const closeModal = () => {
           ></path>
         </svg>
       </button>
-      <h4 class="mb-3 text-lg font-medium text-gray-800 dark:text-white/90 border-b pb-1 ">
+      <h4 class="mb-3 text-lg font-medium text-gray-800 dark:text-white/90 border-b pb-2 ">
           {{ props.title }}
         </h4>
       <div class="px-3 py-2 lg:px-5">

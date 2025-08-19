@@ -11,7 +11,7 @@ const query = reactive({
   pageSize: 25,
   search: '',
   page: 1,
-  notUse: null,
+  notUse: -1,
 })
 const currentPageTitle = ref('Thương hiệu')
 const showModal = ref(false)
@@ -91,7 +91,12 @@ watch(
 )
 
 const getListData = async () => {
-  await brandStore.getList(query)
+  await brandStore.getList({ 
+    page: query.page,
+    pageSize: query.pageSize,
+    search: query.search,
+    notUse: query.notUse == -1 ? null : query.notUse,
+  })
 }
 
 onBeforeMount(async () => {
@@ -172,7 +177,7 @@ onBeforeMount(async () => {
           </div>
           <div class="relative">
             <select-base v-model="query.notUse">
-              <option :value="null">Chọn trạng thái</option>
+              <option :value="-1">Chọn trạng thái</option>
               <option :value="true">Ngưng sử dụng</option>
               <option :value="false">Sử dụng</option>
             </select-base>
@@ -245,18 +250,20 @@ onBeforeMount(async () => {
           -->
             <td class="px-5 py-2 bg-white sm:px-6 dark:bg-white/[0.01]">
               <div class="flex gap-2">
-                <button
-                  type="button"
-                  class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+                <Button
+                  variant="secondary"
                   @click="toggleEdit(item.id)"
+                  size="icon"
                 >
                   <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button
-                  class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  @click="toggleDelete(item.id)"
                 >
                   <i class="fa-solid fa-trash"></i>
-                </button>
+                </Button>
               </div>
             </td>
           </tr>

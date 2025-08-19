@@ -6,6 +6,7 @@ import CustomerModal from './CustomerModal.vue'
 import { confirmAlert, successMessage, errorMessage } from '@/helpers/toast'
 import { BoxIcon } from '@/icons/index'
 import ScrollTable from '@/components/tables/ScrollTable.vue'
+import Button from '@/components/ui/Button.vue'
 
 const currentPageTitle = ref('Khách hàng')
 const customerStore = useCustomerStore()
@@ -192,10 +193,10 @@ onBeforeMount(async () => {
           </div>
           <div class="relative">
             <select-base v-model="query.status">
-              <option selected :value="-1">Chọn trạng thái</option>
-              <option selected :value="0">Chưa kích hoạt</option>
-              <option selected :value="1">Hoạt động</option>
-              <option selected :value="2">Đã khoá</option>
+              <option :value="-1">Chọn trạng thái</option>
+              <option :value="0">Chưa kích hoạt</option>
+              <option :value="1">Hoạt động</option>
+              <option :value="2">Đã khoá</option>
             </select-base>
           </div>
         </div>
@@ -269,18 +270,20 @@ onBeforeMount(async () => {
               class="px-5 py-2 bg-white sm:px-6 dark:bg-white/[0.01]"
             >
               <div class="flex gap-2">
-                <button
-                  type="button"
-                  class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+                <Button
+                  variant="secondary"
                   @click="toggleEdit(item.id)"
+                  size="icon"
                 >
                   <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button
-                  class="inline-flex items-center gap-2 rounded-lg bg-white px-2 py-2 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-gray-300 transition hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  @click="toggleDelete(item.id)"
                 >
                   <i class="fa-solid fa-trash"></i>
-                </button>
+                </Button>
               </div>
             </td>
           </tr>

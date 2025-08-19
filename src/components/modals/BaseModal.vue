@@ -59,7 +59,9 @@ const closeModal = () => {
 
         <slot name="body"></slot>
 
-        <slot name="footer"></slot>
+        <div class="flex items-center justify-end w-full gap-3 mt-6">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
   </div>

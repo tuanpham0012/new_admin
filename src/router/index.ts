@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/',
@@ -16,20 +16,19 @@ const router = createRouter({
         {
           path: '/customers',
           name: 'customers',
-          component: () => import('../views/Customer/Customer.vue')
+          component: () => import('../views/Customer/Customer.vue'),
         },
         {
           path: '/menus',
           name: 'menus',
-          component: () => import('../views/Menu/Menu.vue')
+          component: () => import('../views/Menu/Menu.vue'),
         },
         {
           path: '/taxes',
           name: 'taxes',
-          component: () => import('../views/Tax/Tax.vue')
+          component: () => import('../views/Tax/Tax.vue'),
         },
-      ]
-      
+      ],
     },
     {
       path: '/',
@@ -38,20 +37,19 @@ const router = createRouter({
         {
           path: '/products',
           name: 'Products',
-          component: () => import('../views/Product/Product.vue')
+          component: () => import('../views/Product/Product.vue'),
         },
         {
           path: '/brands',
           name: 'Brands',
-          component: () => import('../views/Brand/Brand.vue')
+          component: () => import('../views/Brand/Brand.vue'),
         },
         {
           path: '/categories',
           name: 'Categories',
-          component: () => import('../views/Category/Category.vue')
+          component: () => import('../views/Category/Category.vue'),
         },
-      ]
-      
+      ],
     },
     {
       path: '/',
@@ -60,12 +58,21 @@ const router = createRouter({
         {
           path: '/orders',
           name: 'order-list',
-          component: () => import('../views/Order/Order.vue')
-        }
-      ]
-      
+          component: () => import('../views/Order/Order.vue'),
+        },
+      ],
     },
-  ]
+    {
+      path: '/page-not-found',
+      name: 'page-not-found',
+      component: () => import('../views/Errors/FourZeroFour.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/page-not-found', // Chuyển hướng về trang không tìm thấy
+      // hoặc có thể redirect bằng tên route: redirect: { name: 'home' }
+    },
+  ],
 })
 
 export default router

@@ -1,0 +1,14 @@
+services:
+  web-app:
+    container_name: web-app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - VITE_VUE_APP_ENV=development
+    environment:
+      - VITE_VUE_APP_ENV=development
+      - TZ=Asia/Ho_Chi_Minh
+    ports:
+      - "8001:80"
+    restart: unless-stopped

@@ -14,6 +14,7 @@
           <div class="mb-3">
             <label for="name" class="required">Danh mục cha</label>
             <select-base v-model="menu.parentId">
+              <option :value="null">-- Chọn Menu Cha --</option>
               <TreeSelect v-for="(menu, index) in menus" :menu="menu" :depth="0" />
             </select-base>
           </div>
@@ -67,7 +68,7 @@
               <label class="form-check-label" for="defaultCheck1">Hiển thị </label>
             </div>
             <div>
-              <input class="me-1" type="checkbox" v-model="menu.groupMenu" id="groupMenu" />
+              <input class="me-1" type="checkbox" v-model="menu.groupMenu" id="groupMenu" :class="{'disabled' : menu.parentId == null}" />
               <label class="form-check-label" for="groupMenu"> Nhóm Danh Mục </label>
             </div>
           </div>
@@ -92,6 +93,11 @@ const props = defineProps({
     required: false,
     default: null,
   },
+  type: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
 })
 
 const emits = defineEmits(['close'])
@@ -103,13 +109,30 @@ const newMenu = reactive({
   name: '',
   path: '',
   icon: '',
-  parentId: 2,
+  parentId: null,
   position: 1,
   active: true,
+  type: props.type,
   groupMenu: false,
 })
 
 const menu = computed(() => (props.id && menuStore.$state.menu ? menuStore.$state.menu : newMenu))
+
+watch(
+  () => props.type,
+  async (newValue) => {
+    await menuStore.getList({ type: props.type })
+  }
+)
+
+watch(
+  () => menu.value.parentId,
+  async (newValue) => {
+    if (newValue) {
+      menu.value.groupMenu = false
+    }
+  }
+)
 
 const menus = computed(() => menuStore.$state.entries.data)
 

@@ -6,9 +6,10 @@ import MenuModal from './MenuModal.vue'
 import TableMenuRow from './TableMenuRow.vue'
 import { confirmAlert, successMessage, errorMessage } from '@/helpers/toast'
 import ScrollTable from '@/components/tables/ScrollTable.vue'
+import Button from '@/components/ui/Button.vue'
 const menuStore = useMenuStore()
 const query = reactive({
-  type: null,
+  type: 0,
 })
 const currentPageTitle = ref('Danh sách menu')
 const showModal = ref(false)
@@ -64,15 +65,16 @@ onBeforeMount(async () => {
         class="flex flex-col justify-between gap-5 border-b border-gray-200 px-5 py-2 sm:flex-row sm:items-center dark:border-gray-800"
       >
         <div>
-          <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-            Danh sách menu
-          </h3>
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Danh sách menu</h3>
         </div>
-        <div class="flex gap-3">
-          <button
-            @click="toggleCreate()"
-            class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition"
-          >
+
+        <div class="flex items-center content-center gap-3">
+          <select-base v-model="query.type">
+            <option :value="0">Admin</option>
+            <option :value="1">Người dùng</option>
+          </select-base>
+
+          <Button size="sm" variant="primary" @click="toggleCreate()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -89,9 +91,10 @@ onBeforeMount(async () => {
               ></path>
             </svg>
             Thêm mới
-          </button>
+          </Button>
         </div>
       </div>
+
       <ScrollTable class="mx-1 my-2">
         <thead class="table-light">
           <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -101,8 +104,10 @@ onBeforeMount(async () => {
               <p class="text-theme-medium font-bold text-gray-800 dark:text-gray-200">Tên</p>
             </th>
             <th class="px-5 py-2 text-left bg-gray-50 w-4/24 sm:px-6 dark:bg-gray-900">Icon</th>
-            <th class="px-5 py-2 text-left bg-gray-50 w-7/24 sm:px-6 dark:bg-gray-900" >Path</th>
-            <th class="px-5 py-2 text-left bg-gray-50 w-3/24 sm:px-6 dark:bg-gray-900">Trạng thái</th>
+            <th class="px-5 py-2 text-left bg-gray-50 w-7/24 sm:px-6 dark:bg-gray-900">Path</th>
+            <th class="px-5 py-2 text-left bg-gray-50 w-3/24 sm:px-6 dark:bg-gray-900">
+              Trạng thái
+            </th>
             <th class="px-5 py-2 text-left bg-gray-50 w-3/24 sm:px-6 dark:bg-gray-900">Actions</th>
           </tr>
         </thead>
@@ -117,7 +122,7 @@ onBeforeMount(async () => {
         </tbody>
       </ScrollTable>
     </div>
-    <MenuModal v-if="showModal" :id="id" @close="toggleModal" />
+    <MenuModal v-if="showModal" :id="id" :type="query.type" @close="toggleModal" />
   </admin-layout>
 </template>
 

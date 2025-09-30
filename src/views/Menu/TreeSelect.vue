@@ -1,5 +1,5 @@
 <template>
-    <option :value="menu.id">{{geneChar(props.depth) }} {{ menu.title }} {{ menu.groupMenu ? '(Nhóm)' : '' }}</option>
+    <option :value="menu.id">{{geneChar(props.depth) }} {{ menu.name }} {{ menu.groupMenu ? '(Nhóm)' : '' }}</option>
     <TreeSelect v-for="(item, index) in menu.children" :key="index" :menu="item" :depth="props.depth + 1" />
 </template>
 <script setup lang="ts">

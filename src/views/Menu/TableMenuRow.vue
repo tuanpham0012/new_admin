@@ -4,13 +4,13 @@
             <div class="d-flex align-content-center" :style="{ paddingLeft: `${props.depth * 1.125}rem` }">
                 <!-- <i class="fa-solid fa-l -translate-y-1.5" v-if="props.depth != 0"></i> <i class="fa-solid fa-window-minimize -translate-y-1" v-else></i>   -->
                 <i class="fa-solid fa-chevron-down translate-y-0.5 me-2" v-if="menu.children.length > 0"></i>
-                <i class="fa-solid fa-chevron-right translate-y-0.5 me-2" v-else></i> {{ menu.title }}
+                <i class="fa-solid fa-chevron-right translate-y-0.5 me-2" v-else></i> {{ menu.name }}
             </div>
             
         </td>
         <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200"><div v-html="menu.icon"></div></td>
-        <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200">{{ menu.url }}</td>
-        <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200">{{ menu.hidden ? "Đã ẩn" : "Hiển thị" }}</td>
+        <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200">{{ menu.path }}</td>
+        <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200">{{ !menu.active ? "Đã ẩn" : "Hiển thị" }}</td>
         <td class="px-5 py-2 sm:px-6 max-w-[500px] dark:bg-white/[0.01] dark:text-gray-200">
             <div class="flex gap-2">
             <Button

@@ -28,6 +28,8 @@ export const useMenuStore = defineStore("menu", {
             await _getList(`${apiUrl}/menus/admin-menu`, query)
                 .then((res) => {
                     this.adminMenus = res.data;
+                    console.log(this.adminMenus);
+                    
                 })
                 .catch((err) => {
                     console.log(err);

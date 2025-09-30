@@ -23,7 +23,7 @@
             <InputText
               type="text"
               id="title"
-              v-model="menu.title"
+              v-model="menu.name"
               placeholder="Nhập tên danh mục"
             />
           </div>
@@ -54,17 +54,17 @@
                 type="text"
                 :disabled="menu.groupMenu"
                 id="url"
-                v-model="menu.url"
+                v-model="menu.path"
                 placeholder="Nhập đường dẫn"
               />
             </div>
-            <Feedback :errors="errors?.url" />
+            <Feedback :errors="errors?.path" />
           </div>
 
           <div class="grid grid-cols-2 my-5">
             <div>
-              <input class="me-1" type="checkbox" v-model="menu.hidden" id="defaultCheck1" />
-              <label class="form-check-label" for="defaultCheck1"> Không hiển thị </label>
+              <input class="me-1" type="checkbox" v-model="menu.active" id="defaultCheck1" />
+              <label class="form-check-label" for="defaultCheck1">Hiển thị </label>
             </div>
             <div>
               <input class="me-1" type="checkbox" v-model="menu.groupMenu" id="groupMenu" />
@@ -100,12 +100,12 @@ const menuStore = useMenuStore()
 
 const newMenu = reactive({
   id: null,
-  title: '',
-  url: '',
+  name: '',
+  path: '',
   icon: '',
   parentId: 2,
   position: 1,
-  hidden: false,
+  active: true,
   groupMenu: false,
 })
 
@@ -119,7 +119,7 @@ watch(
   () => menu.value.groupMenu,
   (newValue) => {
     if (newValue) {
-      menu.value.url = ''
+      menu.value.path = ''
       menu.value.position = 0
     }
   },

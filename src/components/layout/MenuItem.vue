@@ -22,14 +22,14 @@
       :class="[
         'menu-item group w-full',
         {
-          'menu-item-active': isActive(item.path),
-          'menu-item-inactive': !isActive(item.path),
+          'menu-item-active': parentIsActive(item.path),
+          'menu-item-inactive': !parentIsActive(item.path),
         },
         !isExpanded && !isHovered ? 'lg:justify-center' : 'lg:justify-start',
       ]"
     >
       <span
-        :class="[isActive(item.path) ? 'menu-item-icon-active' : 'menu-item-icon-inactive']"
+        :class="[parentIsActive(item.path) ? 'menu-item-icon-active' : 'menu-item-icon-inactive']"
         v-if="item.icon"
       >
         <div v-html="item.icon"></div>
@@ -79,12 +79,13 @@
       @before-leave="startTransition"
       @after-leave="endTransition"
     >
-      <div v-show="isSubmenuOpen(item.id) && (isExpanded || isHovered || isMobileOpen)">
+      <div v-show="item.groupMenu || (isSubmenuOpen(item.id) && (isExpanded || isHovered || isMobileOpen))">
         <ul
           :class="[
             'mt-1 space-y-2',
-            { 'ml-4': !isNested }, // Chỉ thêm padding bên trái nếu không phải là cấp con lồng nhau
-            { 'ml-4': isNested }, // Ít padding hơn cho các cấp sâu hơn
+            item.groupMenu ? 'pl-0' : '[&>li]:pl-8',
+            //{ 'ml-4': !isNested }, // Chỉ thêm padding bên trái nếu không phải là cấp con lồng nhau
+            //{ 'ml-4': isNested }, // Ít padding hơn cho các cấp sâu hơn
           ]"
         >
           <!-- Tự gọi component MenuItem này cho mỗi children -->
@@ -97,11 +98,12 @@
             :is-hovered="isHovered"
             :is-mobile-open="isMobileOpen"
             :active-path="activePath"
-            @toggle-submenu="handleToggleSubmenu"
+            @toggle-submenu="toggleSubmenu"
           />
         </ul>
       </div>
     </transition>
+    <hr class="mt-3" v-if="item.groupMenu" />
   </li>
 </template>
 
@@ -145,12 +147,7 @@ const {
 } = inject('sidebarFunctions')
 
 // Sử dụng các hàm được inject, hoặc định nghĩa lại nếu muốn độc lập hơn
-const isActive = (path) => route.path === path
-
-// Hàm toggle submenu cục bộ, nhưng sẽ thông báo cho component cha
-const handleToggleSubmenu = (itemId) => {
-  emit('toggleSubmenu', itemId)
-}
+const isActive = (item) => (route.path === item.path || openSubmenu.value === item.id)
 
 const toggleSubmenu = (itemId) => {
   emit('toggleSubmenu', itemId)
@@ -158,11 +155,12 @@ const toggleSubmenu = (itemId) => {
 
 const isSubmenuOpen = (itemId) => {
   // Kiểm tra xem submenu này có đang mở không
+
   return (
     openSubmenu.value === itemId ||
-    (props.item.children &&
+    (props.item.children && props.item.children.length > 0 &&
       props.item.children.some((child) =>
-        child.path ? isActive(child.path) : isSubmenuOpen(child.id),
+        child.path ? isActive(child) : isSubmenuOpen(child.id),
       ))
   )
 }
@@ -171,15 +169,15 @@ const startTransition = parentStartTransition
 const endTransition = parentEndTransition
 
 onMounted(() => {
-  if (
-    props.item &&
-    props.item.children &&
-    props.item.children.length > 0 &&
-    props.item.groupMenu == true
-  ) {
-    // Mở submenu nếu có con và con đó đang active
-    toggleSubmenu(props.item.id)
-  }
+  // if (
+  //   props.item &&
+  //   props.item.children &&
+  //   props.item.children.length > 0 &&
+  //   props.item.groupMenu == true
+  // ) {
+  //   // Mở submenu nếu có con và con đó đang active
+  //   toggleSubmenu(props.item.id)
+  // }
 })
 </script>
 

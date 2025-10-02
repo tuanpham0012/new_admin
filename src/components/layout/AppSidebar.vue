@@ -49,6 +49,7 @@
       class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar"
     >
       <nav class="mb-6">
+        {{ openSubmenu }}
         <div class="flex flex-col gap-4">
           <ul class="flex flex-col gap-4">
             <!-- Lặp qua các menu item cấp cao nhất -->
